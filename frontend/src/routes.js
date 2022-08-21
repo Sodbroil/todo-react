@@ -12,6 +12,7 @@ import NotFound from './pages/Page404'
 import Register from './pages/Register'
 import TodoOne from './pages/TodoOne'
 import Dashboard from './pages/Dashboard'
+import Profile from './pages/Profile'
 
 // ----------------------------------------------------------------------
 
@@ -34,6 +35,7 @@ export default function Router() {
 			path: '/app',
 			element: <DashboardLayout/>,
 			children: [
+				{path: 'profile/:id', element: <Profile/>},
 				{path: 'dashboard', element: <Dashboard/>},
 				{path: 'todo', element: <Todo/>},
 				{path: 'todo/:id', element: <TodoOne/>},
