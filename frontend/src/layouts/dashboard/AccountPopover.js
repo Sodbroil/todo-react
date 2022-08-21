@@ -12,31 +12,9 @@ import MenuPopover from '../../components/MenuPopover'
 import axios from '../../axios'
 import Loading from '../../components/Loading'
 
-// ----------------------------------------------------------------------
-
-const MENU_OPTIONS = [
-	{
-		label: 'Главная',
-		icon: 'eva:home-fill',
-		linkTo: '/app/dashboard'
-	},
-	{
-		label: 'Профиль',
-		icon: 'eva:person-fill',
-		linkTo: '/app/profile'
-	}
-	// {
-	//   label: 'Настройки',
-	//   icon: 'eva:settings-2-fill',
-	//   linkTo: '#',
-	// },
-]
-
-// ----------------------------------------------------------------------
 
 export default function AccountPopover() {
 	const anchorRef = useRef(null)
-
 	const [open, setOpen] = useState(null)
 
 	const handleOpen = (event) => {
@@ -77,6 +55,24 @@ export default function AccountPopover() {
 	if (isLoading) {
 		return <Loading/>
 	}
+
+	const MENU_OPTIONS = [
+		{
+			label: 'Главная',
+			icon: 'eva:home-fill',
+			linkTo: '/app/dashboard'
+		},
+		{
+			label: 'Профиль',
+			icon: 'eva:person-fill',
+			linkTo: `/app/profile/${data.userData._id}`
+		}
+		// {
+		//   label: 'Настройки',
+		//   icon: 'eva:settings-2-fill',
+		//   linkTo: '#',
+		// },
+	]
 
 	return (
 		<>
