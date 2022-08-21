@@ -21,4 +21,4 @@ const UserSchema = new mongoose.Schema(
 	}
 )
 
-export default mongoose.model('Todo', UserSchema)
+export default mongoose.model('users', UserSchema)

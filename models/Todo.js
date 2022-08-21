@@ -4,7 +4,7 @@ const TodoSchema = new mongoose.Schema(
 	{
 		user: {
 			type: mongoose.Schema.Types.ObjectId,
-			ref: 'Todo',
+			ref: 'todo',
 			required: true,
 		},
 		title: {
@@ -28,5 +28,5 @@ const TodoSchema = new mongoose.Schema(
 		timestamps: true,
 	}
 )
-
-export default mongoose.model('Todolist', TodoSchema)
+// 1
+export default mongoose.model('todo', TodoSchema)

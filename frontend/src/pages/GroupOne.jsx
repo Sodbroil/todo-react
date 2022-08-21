@@ -9,69 +9,70 @@ import axios from '../axios'
 import { fetchRemoveGroup } from '../redux/slices/group'
 import Loading from '../components/Loading'
 import { DialogEdit, DialogRemove, GroupOneInfo } from '../components/Group'
+import { fDate } from '../utils/formatTime'
 
 export default function GroupOne() {
 	const dispatch = useDispatch()
 	const navigate = useNavigate()
-	const { id } = useParams()
+	const {id} = useParams()
 	const [data, setData] = React.useState()
 	const [isLoading, setLoading] = React.useState(true)
 	const [open, setOpen] = React.useState(false)
 	const [openEdit, setOpenEdit] = React.useState(false)
 	const [title, setTitle] = React.useState('')
 	const [priority, setPriority] = React.useState('')
-	
+
 	const date = (param) => {
 		const dateNew = new Date(param)
 		const data = dateNew.toLocaleDateString('en-US')
 		return data
 	}
-	
+
 	const handleClickOpen = () => {
 		setOpen(true)
 	}
-	
+
 	const handleClickOpenEdit = () => {
 		setOpenEdit(true)
 	}
-	
+
 	const handleClose = () => {
 		setOpen(false)
 	}
-	
+
 	const handleCloseEdit = () => {
 		setOpenEdit(false)
 	}
-	
+
 	const onClickRemove = () => {
 		dispatch(fetchRemoveGroup(id))
 		setOpen(false)
 		navigate(`/app/groups`)
 	}
-	
+
 	const {
 		handleSubmit,
-		formState: { errors, isValid }
+		formState: {errors, isValid}
 	} = useForm({
 		defaultValues: {
 			title: '',
 			priority: ''
-			
+
 		},
 		mode: 'onChange'
 	})
-	
+
 	const onSubmit = async () => {
 		try {
-			const fields = { title, priority }
-			const { data } = await axios.patch(`/app/groups/${id}`, fields)
+			const fields = {title, priority}
+			const {data} = await axios.patch(`/app/groups/${id}`, fields)
 			navigate(`/app/groups`)
 		} catch (e) {
 			console.warn(e)
 			alert('Не удалось обновить пост')
 		}
 	}
-	
+
 	React.useEffect(() => {
 		axios.get(`/app/groups/${id}`).then(res => {
 			setData(res.data)
@@ -83,15 +84,15 @@ export default function GroupOne() {
 			alert('Не удалось получить группу')
 		})
 	}, [])
-	
+
 	if (isLoading) {
-		return <Loading />
+		return <Loading/>
 	}
-	
+
 	return (
 		<Page title='Информация о группе'>
 			<Container key={data.title}>
-				<DialogRemove open={open} onClose={handleClose} onClick={onClickRemove} />
+				<DialogRemove open={open} onClose={handleClose} onClick={onClickRemove}/>
 				<DialogEdit
 					open={openEdit}
 					onClose={handleCloseEdit}
@@ -106,7 +107,7 @@ export default function GroupOne() {
 						Информация о группе
 					</Typography>
 				</Stack>
-				<GroupOneInfo data={data} s={date(data.createdAt)} onClick={handleClickOpenEdit} onClick1={handleClickOpen} />
+				<GroupOneInfo data={data} s={fDate(data.createdAt)} onClick={handleClickOpenEdit} onClick1={handleClickOpen}/>
 			</Container>
 		</Page>
 	)

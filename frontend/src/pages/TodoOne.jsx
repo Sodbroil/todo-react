@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { useForm } from 'react-hook-form'
 import {
+	Alert,
 	Container,
 	Dialog,
 	DialogActions,
@@ -14,6 +15,7 @@ import {
 	InputLabel,
 	MenuItem,
 	Select,
+	Snackbar,
 	Stack,
 	TextField,
 	Typography
@@ -24,11 +26,12 @@ import Page from '../components/Page'
 import axios from '../axios'
 import Loading from '../components/Loading'
 import { DialogRemove, TodoOneInfo } from '../components/Todo'
+import { fDate } from "../utils/formatTime";
 
 export default function TodoOne() {
 	const dispatch = useDispatch()
 	const navigate = useNavigate()
-	const { id } = useParams()
+	const {id} = useParams()
 	const [data, setData] = React.useState()
 	const [isLoading, setLoading] = React.useState(true)
 	const [open, setOpen] = React.useState(false)
@@ -37,61 +40,65 @@ export default function TodoOne() {
 	const [group, setGroup] = React.useState('')
 	const [comment, setComment] = React.useState('')
 	const [status, setStatus] = React.useState('')
-	
-	
+	const [errorText, setErrorText] = React.useState('')
+	const [hasError, setHasError] = useState(false);
+
+
 	const date = (param) => {
 		const dateNew = new Date(param)
 		const data = dateNew.toLocaleDateString('en-US')
 		return data
 	}
-	
+
 	const handleClickOpen = () => {
 		setOpen(true)
 	}
-	
+
 	const handleClickOpenEdit = () => {
 		setOpenEdit(true)
 	}
-	
+
 	const handleClose = () => {
 		setOpen(false)
 	}
-	
+
 	const handleCloseEdit = () => {
 		setOpenEdit(false)
 	}
-	
+
 	const onClickRemove = () => {
 		dispatch(fetchRemoveTodo(id))
 		setOpen(false)
 		navigate(`/app/todo`)
 	}
-	
+
 	const {
 		handleSubmit,
-		formState: { errors, isValid }
+		formState: {errors, isValid}
 	} = useForm({
 		defaultValues: {
 			title: '',
 			group: '',
 			comment: '',
 			status: ''
-			
+
 		},
 		mode: 'onChange'
 	})
-	
+
 	const onSubmit = async () => {
 		try {
-			const fields = { title, group, comment, status }
-			const { data } = await axios.patch(`/app/todo/${id}`, fields)
+			const fields = {title, group, comment, status}
+			const {data} = await axios.patch(`/app/todo/${id}`, fields)
 			navigate(`/app/todo`)
 		} catch (e) {
 			console.warn(e)
-			alert('Не удалось обновить задачу')
+			setErrorText(e.response.data[0].msg)
+			setHasError(true);
 		}
 	}
-	
+
+
 	React.useEffect(() => {
 		axios.get(`/app/todo/${id}`).then(res => {
 			setData(res.data)
@@ -101,18 +108,29 @@ export default function TodoOne() {
 			setStatus(res.status)
 			setLoading(false)
 		}).catch(err => {
-			console.warn(err)
-			alert('Не удалось получить задачу')
+			navigate('/404')
+			// navigate(`/`)
 		})
 	}, [])
-	
+
+	console.log(data)
+
 	if (isLoading) {
-		return <Loading />
+		return <Loading/>
 	}
-	
+
 	return (
 		<div>
 			<Page title='Информация о задаче'>
+				{hasError && <Snackbar
+					open
+					autoHideDuration={6000}
+				>
+					<Alert severity="error" sx={{width: '100%'}}>
+						{errorText}
+					</Alert>
+				</Snackbar>
+				}
 				<Container key={data.title}>
 					<Stack direction='row' alignItems='center' justifyContent='space-between' mb={5}>
 						<Typography variant='h4' gutterBottom>
@@ -132,7 +150,7 @@ export default function TodoOne() {
 							<DialogContent>
 								<DialogContentText id='alert-dialog-description'>
 									<Grid container direction='center' justifyContent='center' alignItems='center'>
-										<Stack spacing={2} sx={{ minWidth: 300, mb: 2 }}>
+										<Stack spacing={2} sx={{minWidth: 300, mb: 2}}>
 											<TextField
 												name='title'
 												label='Название'
@@ -152,7 +170,7 @@ export default function TodoOne() {
 												</Select>
 											</FormControl>
 											<TextField name='comment' label='Комменатрий' defaultValue={data.comment}
-											           onChange={(e) => setComment(e.target.value)} />
+											           onChange={(e) => setComment(e.target.value)}/>
 											<FormControl>
 												<InputLabel htmlFor='status-select'>Статус</InputLabel>
 												<Select
@@ -178,8 +196,9 @@ export default function TodoOne() {
 							</DialogActions>
 						</form>
 					</Dialog>
-					<DialogRemove open={open} onClose={handleClose} onClick={onClickRemove} />
-					<TodoOneInfo data={data} s={date(data.createdAt)} onClick={handleClickOpenEdit} onClick1={handleClickOpen} />
+					<DialogRemove open={open} onClose={handleClose} onClick={onClickRemove}/>
+					<TodoOneInfo data={data} s={fDate(data.createdAt)} onClick={handleClickOpenEdit}
+					             onClick1={handleClickOpen}/>
 				</Container>
 			</Page>
 		</div>

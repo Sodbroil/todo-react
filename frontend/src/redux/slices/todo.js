@@ -2,12 +2,13 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from '../../axios'
 
 export const fetchTodo = createAsyncThunk('app/todo/fetchTodo', async () => {
-	const { data } = await axios.get('/app/todo')
+	const {data} = await axios.get('/app/todo')
 	return data
 })
 
+
 export const fetchNewTodo = createAsyncThunk('app/todo/fetchNewTodo', async (params) => {
-	const { data } = await axios.post('/app/todo', params)
+	const {data} = await axios.post('/app/todo', params)
 	return data
 })
 

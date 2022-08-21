@@ -18,7 +18,7 @@ const MENU_OPTIONS = [
 	{
 		label: 'Главная',
 		icon: 'eva:home-fill',
-		linkTo: '/app/todo'
+		linkTo: '/app/dashboard'
 	},
 	{
 		label: 'Профиль',
@@ -36,33 +36,33 @@ const MENU_OPTIONS = [
 
 export default function AccountPopover() {
 	const anchorRef = useRef(null)
-	
+
 	const [open, setOpen] = useState(null)
-	
+
 	const handleOpen = (event) => {
 		setOpen(event.currentTarget)
 	}
-	
+
 	const handleClose = () => {
 		setOpen(null)
 	}
-	
+
 	const dispatch = useDispatch()
 	const navigate = useNavigate()
-	
+
 	const onClickLogout = () => {
 		dispatch(logout())
 		window.localStorage.removeItem('token')
-		navigate('/auth/login', { replace: true })
+		navigate('/auth/login', {replace: true})
 	}
-	
+
 	// const userData = useSelector((state) => state.auth.data);
-	
+
 	const [data, setData] = useState()
 	const [isLoading, setLoading] = useState(true)
-	
+
 	React.useEffect(() => {
-		(async function() {
+		(async function () {
 			try {
 				axios.get('/auth/me').then((res) => {
 					setData(res.data)
@@ -73,11 +73,11 @@ export default function AccountPopover() {
 			}
 		})()
 	}, [])
-	
+
 	if (isLoading) {
-		return <Loading />
+		return <Loading/>
 	}
-	
+
 	return (
 		<>
 			<IconButton
@@ -98,9 +98,9 @@ export default function AccountPopover() {
 					})
 				}}
 			>
-				<Avatar src='/static/mock-images/avatars/avatar_default.jpg' alt='photoURL' />
+				<Avatar src='/static/mock-images/avatars/avatar_default.jpg' alt='photoURL'/>
 			</IconButton>
-			
+
 			<MenuPopover
 				open={Boolean(open)}
 				anchorEl={open}
@@ -115,30 +115,30 @@ export default function AccountPopover() {
 					}
 				}}
 			>
-				<Box sx={{ my: 1.5, px: 2.5 }}>
+				<Box sx={{my: 1.5, px: 2.5}}>
 					<>
 						<Typography variant='subtitle2' noWrap>
 							{data.userData.fullName}
 						</Typography>
-						<Typography variant='body2' sx={{ color: 'text.secondary' }} noWrap>
+						<Typography variant='body2' sx={{color: 'text.secondary'}} noWrap>
 							{data.userData.email}
 						</Typography>
 					</>
 				</Box>
-				
-				<Divider sx={{ borderStyle: 'dashed' }} />
-				
-				<Stack sx={{ p: 1 }}>
+
+				<Divider sx={{borderStyle: 'dashed'}}/>
+
+				<Stack sx={{p: 1}}>
 					{MENU_OPTIONS.map((option) => (
 						<MenuItem key={option.label} to={option.linkTo} component={RouterLink} onClick={handleClose}>
 							{option.label}
 						</MenuItem>
 					))}
 				</Stack>
-				
-				<Divider sx={{ borderStyle: 'dashed' }} />
-				
-				<MenuItem onClick={onClickLogout} sx={{ m: 1 }}>
+
+				<Divider sx={{borderStyle: 'dashed'}}/>
+
+				<MenuItem onClick={onClickLogout} sx={{m: 1}}>
 					Выйти
 				</MenuItem>
 			</MenuPopover>

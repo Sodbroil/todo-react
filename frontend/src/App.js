@@ -8,23 +8,21 @@ import Router from './routes'
 import ThemeProvider from './theme'
 // components
 import ScrollToTop from './components/ScrollToTop'
-import { BaseOptionChartStyle } from './components/chart/BaseOptionChart'
 
 // ----------------------------------------------------------------------
 
 export default function App() {
 	const dispatch = useDispatch()
 	const isAuth = useSelector(selectIsAuth)
-	
+
 	React.useEffect(() => {
 		dispatch(fetchAuthMe())
 	}, [])
-	
+
 	return (
 		<ThemeProvider>
-			<ScrollToTop />
-			<BaseOptionChartStyle />
-			<Router />
+			<ScrollToTop/>
+			<Router/>
 		</ThemeProvider>
 	)
 }

@@ -68,7 +68,7 @@ export function DialogNew(props) {
 			<DialogContent>
 				<DialogContentText id='new-group-description'>
 					<Grid container direction='center' justifyContent='center' alignItems='center'>
-						<Stack spacing={2} sx={{ minWidth: 300, mb: 2 }}>
+						<Stack spacing={2} sx={{minWidth: 300, mb: 2}}>
 							<TextField
 								defaultValue=''
 								name='title'
@@ -115,18 +115,18 @@ export function DialogNew(props) {
 
 export function GroupOneInfo(props) {
 	return <Grid item xs={12} md={6} lg={4}>
-		<Card sx={{ minWidth: 275 }}>
+		<Card sx={{minWidth: 275}}>
 			<CardContent>
-				<Typography sx={{ mb: 1.5 }} variant='h5' component='div'>
+				<Typography sx={{mb: 1.5}} variant='h5' component='div'>
 					{props.data.title}
 				</Typography>
-				<Typography sx={{ fontSize: 12 }} color='text.secondary'>
+				<Typography sx={{fontSize: 12}} color='text.secondary'>
 					Приоритет: {props.data.priority}
 				</Typography>
-				<Typography sx={{ fontSize: 12 }} color='text.secondary'>
+				<Typography sx={{fontSize: 12}} color='text.secondary'>
 					Дата создания: {props.s}
 				</Typography>
-				<Typography sx={{ fontSize: 12 }} color='text.secondary'>
+				<Typography sx={{fontSize: 12}} color='text.secondary'>
 					ID: {props.data._id}
 				</Typography>
 			</CardContent>
@@ -171,7 +171,7 @@ export function DialogEdit(props) {
 			<DialogContent>
 				<DialogContentText id='edit-group-description'>
 					<Grid container direction='center' justifyContent='center' alignItems='center'>
-						<Stack spacing={2} sx={{ minWidth: 300, mb: 2 }}>
+						<Stack spacing={2} sx={{minWidth: 300, mb: 2}}>
 							<TextField
 								defaultValue={props.data.title}
 								name='title'
