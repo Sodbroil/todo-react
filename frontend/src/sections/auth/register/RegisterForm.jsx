@@ -8,6 +8,7 @@ import { LoadingButton } from '@mui/lab';
 // components
 import Iconify from '../../../components/Iconify';
 import { fetchRegister, selectIsAuth } from '../../../redux/slices/auth';
+import Loading from "../../../components/Loading";
 
 // ----------------------------------------------------------------------
 
@@ -16,6 +17,7 @@ export default function RegisterForm() {
 	const dispatch = useDispatch();
 	const [showPassword, setShowPassword] = useState(false);
 	const [hasError, setHasError] = useState(false);
+	const [isLoading, setLoading] = useState(false)
 
 	const {
 		register,
@@ -35,9 +37,8 @@ export default function RegisterForm() {
 	const onSubmit = async (values) => {
 		try {
 			const data = await dispatch(fetchRegister(values));
-			if ('token' in data.payload) {
-				window.localStorage.setItem('token', data.payload.token);
-			}
+			window.localStorage.setItem('token', data.payload.token);
+			setLoading(true)
 		} catch (e) {
 			setHasError(true);
 		}
@@ -45,6 +46,10 @@ export default function RegisterForm() {
 
 	function ErrorComponent() {
 		return <Alert severity="error" sx={{mb: 2}}>Ошибка регистрации. Обратитесь в поддержку.</Alert>
+	}
+
+	if (isLoading) {
+		return <Loading/>
 	}
 
 	if (isAuth) {
