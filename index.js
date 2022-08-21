@@ -42,7 +42,7 @@ app.post(
 );
 app.get("/auth/me", checkAuth, UserController.getMe);
 app.get("/app/getCount", checkAuth, DashboardController.getCount);
-app.get("/app/profile", checkAuth, ProfileController.getInfo);
+app.get("/app/profile/:id", checkAuth, ProfileController.getInfo);
 
 app.get("/app/todo", checkAuth, TodoController.getAll);
 app.get("/app/todo/:id", checkAuth, TodoController.getOne);
