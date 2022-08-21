@@ -11,56 +11,37 @@ import Login from './pages/Login'
 import NotFound from './pages/Page404'
 import Register from './pages/Register'
 import TodoOne from './pages/TodoOne'
+import Dashboard from './pages/Dashboard'
 
 // ----------------------------------------------------------------------
 
 export default function Router() {
 	return useRoutes([
-		// {
-		//   path: '/dashboard',
-		//   element: <DashboardLayout />,
-		//   children: [
-		//     { path: 'app', element: <DashboardApp /> },
-		//     { path: 'user', element: <Todo /> },
-		//     { path: 'products', element: <Products /> },
-		//     { path: 'blog', element: <Blog /> },
-		//   ],
-		// },
-		// {
-		//   path: '/',
-		//   element: <LogoOnlyLayout />,
-		//   children: [
-		//     { path: '/', element: <Navigate to="/dashboard/app" /> },
-		//     { path: 'login', element: <Login /> },
-		//     { path: 'register', element: <Register /> },
-		//     { path: '404', element: <NotFound /> },
-		//     { path: '*', element: <Navigate to="/404" /> },
-		//   ],
-		// },
-		// { path: '*', element: <Navigate to="/404" replace /> },
 		{
 			path: '/',
-			element: <Navigate to='/auth/login' replace />
+			element: <Navigate to='/auth/login' replace/>
 		},
 		{
 			path: '/auth',
-			element: <LogoOnlyLayout />,
+			element: <LogoOnlyLayout/>,
 			children: [
-				{ path: 'login', element: <Login /> },
-				{ path: 'register', element: <Register /> },
-				{ path: '404', element: <NotFound /> }
+				{path: 'login', element: <Login/>},
+				{path: 'register', element: <Register/>},
+				{path: '404', element: <NotFound/>}
 			]
 		},
 		{
 			path: '/app',
-			element: <DashboardLayout />,
+			element: <DashboardLayout/>,
 			children: [
-				{ path: 'todo', element: <Todo /> },
-				{ path: 'todo/:id', element: <TodoOne /> },
-				{ path: 'groups', element: <Group /> },
-				{ path: 'groups/:id', element: <GroupOne /> }
+				{path: 'dashboard', element: <Dashboard/>},
+				{path: 'todo', element: <Todo/>},
+				{path: 'todo/:id', element: <TodoOne/>},
+				{path: 'groups', element: <Group/>},
+				{path: 'groups/:id', element: <GroupOne/>}
 			]
 		},
-		{ path: '*', element: <Navigate to='/404' replace /> }
+		{path: '404', element: <NotFound/>},
+		{path: '*', element: <Navigate to='/404' replace/>}
 	])
 }
