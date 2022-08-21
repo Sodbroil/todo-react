@@ -3,7 +3,13 @@ import cors from "cors";
 import mongoose from "mongoose";
 import { loginValidation, registerValidation } from "./validations/auth.js";
 import { todoValidation } from "./validations/todo.js";
-import { DashboardController, GroupController, TodoController, UserController } from "./controllers/index.js";
+import {
+	DashboardController,
+	GroupController,
+	ProfileController,
+	TodoController,
+	UserController
+} from "./controllers/index.js";
 import { checkAuth, handleValidationErrors } from "./utils/index.js";
 import { groupValidation } from "./validations/group.js";
 
@@ -36,6 +42,7 @@ app.post(
 );
 app.get("/auth/me", checkAuth, UserController.getMe);
 app.get("/app/getCount", checkAuth, DashboardController.getCount);
+app.get("/app/profile", checkAuth, ProfileController.getInfo);
 
 app.get("/app/todo", checkAuth, TodoController.getAll);
 app.get("/app/todo/:id", checkAuth, TodoController.getOne);
