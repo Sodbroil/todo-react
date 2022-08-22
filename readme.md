@@ -5,7 +5,7 @@
 <p align="center">
     Мой первый проект на ReactJs
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
+    <a href="">Посмотреть демо (временно не доступно)</a>
   </p>
 </div>
 
