@@ -22,7 +22,7 @@
 
 1. Клонировать репозиторий
    ```sh
-   git clone https://github.com/Sodbroil/todo-list.git
+   git clone https://github.com/Sodbroil/todo-react.git
    ```
 2. Установить npm-пакеты
    ```sh
