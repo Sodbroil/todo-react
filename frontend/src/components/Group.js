@@ -68,7 +68,7 @@ export function DialogNew(props) {
 			<DialogContent>
 				<DialogContentText id='new-group-description'>
 					<Grid container direction='center' justifyContent='center' alignItems='center'>
-						<Stack spacing={2} sx={{minWidth: 300, mb: 2}}>
+						<Stack spacing={2} sx={{minWidth: 300, m: 0.5}}>
 							<TextField
 								defaultValue=''
 								name='title'
@@ -171,7 +171,7 @@ export function DialogEdit(props) {
 			<DialogContent>
 				<DialogContentText id='edit-group-description'>
 					<Grid container direction='center' justifyContent='center' alignItems='center'>
-						<Stack spacing={2} sx={{minWidth: 300, mb: 2}}>
+						<Stack spacing={2} sx={{minWidth: 300, m: 0.5}}>
 							<TextField
 								defaultValue={props.data.title}
 								name='title'

@@ -76,8 +76,8 @@ export default function GroupOne() {
 	React.useEffect(() => {
 		axios.get(`/app/groups/${id}`).then(res => {
 			setData(res.data)
-			setTitle(res.title)
-			setPriority(res.priority)
+			setTitle(res.data.title)
+			setPriority(res.data.priority)
 			setLoading(false)
 		}).catch(err => {
 			console.warn(err)

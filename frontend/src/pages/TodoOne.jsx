@@ -2,31 +2,14 @@ import React, { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { useForm } from 'react-hook-form'
-import {
-	Alert,
-	Container,
-	Dialog,
-	DialogActions,
-	DialogContent,
-	DialogContentText,
-	DialogTitle,
-	FormControl,
-	Grid,
-	InputLabel,
-	MenuItem,
-	Select,
-	Snackbar,
-	Stack,
-	TextField,
-	Typography
-} from '@mui/material'
-import { LoadingButton } from '@mui/lab'
+import { Alert, Container, Snackbar, Stack, Typography } from '@mui/material'
 import { fetchRemoveTodo } from '../redux/slices/todo'
 import Page from '../components/Page'
 import axios from '../axios'
 import Loading from '../components/Loading'
-import { DialogRemove, TodoOneInfo } from '../components/Todo'
+import { DialogEdit, DialogRemove, TodoOneInfo } from '../components/Todo'
 import { fDate } from "../utils/formatTime";
+
 
 export default function TodoOne() {
 	const dispatch = useDispatch()
@@ -89,6 +72,7 @@ export default function TodoOne() {
 	const onSubmit = async () => {
 		try {
 			const fields = {title, group, comment, status}
+			console.log(fields)
 			const {data} = await axios.patch(`/app/todo/${id}`, fields)
 			navigate(`/app/todo`)
 		} catch (e) {
@@ -102,18 +86,16 @@ export default function TodoOne() {
 	React.useEffect(() => {
 		axios.get(`/app/todo/${id}`).then(res => {
 			setData(res.data)
-			setTitle(res.title)
-			setGroup(res.group)
-			setComment(res.comment)
-			setStatus(res.status)
+			setTitle(res.data.title)
+			setGroup(res.data.group)
+			setComment(res.data.comment)
+			setStatus(res.data.status)
 			setLoading(false)
 		}).catch(err => {
 			navigate('/404')
 			// navigate(`/`)
 		})
 	}, [])
-
-	console.log(data)
 
 	if (isLoading) {
 		return <Loading/>
@@ -137,65 +119,17 @@ export default function TodoOne() {
 							Информация о группе
 						</Typography>
 					</Stack>
-					<Dialog
+					<DialogEdit
+						key={data.group}
 						open={openEdit}
 						onClose={handleCloseEdit}
-						aria-labelledby='alert-dialog-title'
-						aria-describedby='alert-dialog-description'
-					>
-						<form onSubmit={handleSubmit(onSubmit)}>
-							<DialogTitle id='alert-dialog-title'>
-								{'Редактирование задачи'}
-							</DialogTitle>
-							<DialogContent>
-								<DialogContentText id='alert-dialog-description'>
-									<Grid container direction='center' justifyContent='center' alignItems='center'>
-										<Stack spacing={2} sx={{minWidth: 300, mb: 2}}>
-											<TextField
-												name='title'
-												label='Название'
-												defaultValue={data.title}
-												onChange={(e) => setTitle(e.target.value)}
-											/>
-											<FormControl disabled>
-												<InputLabel htmlFor='group-select'>Группа</InputLabel>
-												<Select
-													id='group-select'
-													label='Группа'
-													name='group'
-													defaultValue={data.group}
-													onChange={(e) => setGroup(e.target.value)}
-												>
-													<MenuItem key={data.group} value={data.group}>{data.group}</MenuItem>
-												</Select>
-											</FormControl>
-											<TextField name='comment' label='Комменатрий' defaultValue={data.comment}
-											           onChange={(e) => setComment(e.target.value)}/>
-											<FormControl>
-												<InputLabel htmlFor='status-select'>Статус</InputLabel>
-												<Select
-													defaultValue={data.status}
-													id='status-select'
-													label='status'
-													name='status'
-													onChange={(e) => setStatus(e.target.value)}
-												>
-													<MenuItem value='Создана'>Создана</MenuItem>
-													<MenuItem value='В процессе'>В процессе</MenuItem>
-													<MenuItem value='Завершена'>Завершена</MenuItem>
-												</Select>
-											</FormControl>
-										</Stack>
-									</Grid>
-								</DialogContentText>
-							</DialogContent>
-							<DialogActions>
-								<LoadingButton disabled={!isValid} fullWidth size='large' type='submit' variant='contained'>
-									Редактировать
-								</LoadingButton>
-							</DialogActions>
-						</form>
-					</Dialog>
+						onSubmit={handleSubmit(onSubmit)}
+						data={data}
+						onChange={(e) => setTitle(e.target.value)}
+						onChange1={(e) => setGroup(e.target.value)}
+						onChange2={(e) => setComment(e.target.value)}
+						onChange3={(e) => setStatus(e.target.value)}
+						valid={isValid}/>
 					<DialogRemove open={open} onClose={handleClose} onClick={onClickRemove}/>
 					<TodoOneInfo data={data} s={fDate(data.createdAt)} onClick={handleClickOpenEdit}
 					             onClick1={handleClickOpen}/>

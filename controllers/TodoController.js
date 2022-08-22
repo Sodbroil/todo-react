@@ -122,7 +122,7 @@ export const update = async (req, res) => {
 		);
 
 		res.json({
-			success: true,
+			message: 'updateTodo',
 		});
 	} catch (error) {
 		console.log(error);

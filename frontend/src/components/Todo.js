@@ -40,6 +40,18 @@ DialogNew.propTypes = {
 	valid: PropTypes.bool
 }
 
+DialogEdit.propTypes = {
+	open: PropTypes.bool,
+	onClose: PropTypes.func,
+	onSubmit: PropTypes.func,
+	data: PropTypes.func,
+	onChange: PropTypes.func,
+	onChange1: PropTypes.func,
+	onChange2: PropTypes.func,
+	onChange3: PropTypes.func,
+	valid: PropTypes.bool
+};
+
 DialogRemove.propTypes = {
 	open: PropTypes.bool,
 	onClose: PropTypes.func,
@@ -48,24 +60,24 @@ DialogRemove.propTypes = {
 
 export function TodoOneInfo(props) {
 	return <Grid item xs={12} md={6} lg={4}>
-		<Card sx={{ minWidth: 275 }}>
+		<Card sx={{minWidth: 275}}>
 			<CardContent>
-				<Typography sx={{ mb: 1.5 }} variant='h5' component='div'>
+				<Typography sx={{mb: 1.5}} variant='h5' component='div'>
 					{props.data.title}
 				</Typography>
-				<Typography sx={{ fontSize: 12 }} color='text.secondary'>
+				<Typography sx={{fontSize: 12}} color='text.secondary'>
 					Группа: {props.data.group}
 				</Typography>
-				<Typography sx={{ fontSize: 12 }} color='text.secondary'>
+				<Typography sx={{fontSize: 12}} color='text.secondary'>
 					Комментарий: {props.data.comment}
 				</Typography>
-				<Typography sx={{ fontSize: 12 }} color='text.secondary'>
+				<Typography sx={{fontSize: 12}} color='text.secondary'>
 					Статус: {props.data.status}
 				</Typography>
-				<Typography sx={{ fontSize: 12 }} color='text.secondary'>
+				<Typography sx={{fontSize: 12}} color='text.secondary'>
 					Дата создания: {props.s}
 				</Typography>
-				<Typography sx={{ fontSize: 12 }} color='text.secondary'>
+				<Typography sx={{fontSize: 12}} color='text.secondary'>
 					ID: {props.data._id}
 				</Typography>
 			</CardContent>
@@ -91,7 +103,7 @@ export function DialogNew(props) {
 			<DialogContent>
 				<DialogContentText id='new-todo-dialog-description'>
 					<Grid container direction='center' justifyContent='center' alignItems='center'>
-						<Stack spacing={2} sx={{ minWidth: 300, mb: 2 }}>
+						<Stack spacing={2} sx={{minWidth: 300, m: 0.5}}>
 							<TextField
 								name='title'
 								label='Название'
@@ -142,6 +154,68 @@ export function DialogNew(props) {
 			</DialogActions>
 		</form>
 	</Dialog>
+}
+
+export function DialogEdit(props) {
+	return <Dialog
+		open={props.open}
+		onClose={props.onClose}
+		aria-labelledby="alert-dialog-title"
+		aria-describedby="alert-dialog-description"
+	>
+		<form onSubmit={props.onSubmit}>
+			<DialogTitle id="alert-dialog-title">
+				{"Редактирование задачи"}
+			</DialogTitle>
+			<DialogContent>
+				<DialogContentText id="alert-dialog-description">
+					<Grid container direction="center" justifyContent="center" alignItems="center">
+						<Stack spacing={2} sx={{minWidth: 300, m: 0.5}}>
+							<TextField
+								name="title"
+								label="Название"
+								defaultValue={props.data.title}
+								onChange={props.onChange}
+							/>
+							<FormControl disabled>
+								<InputLabel htmlFor="group-select">Группа</InputLabel>
+								<Select
+									id="group-select"
+									label="Группа"
+									name="group"
+									defaultValue={props.data.group}
+									onChange={props.onChange1}
+								>
+									<MenuItem value={props.data.group}>{props.data.group}</MenuItem>
+								</Select>
+							</FormControl>
+							<TextField name="comment" label="Комменатрий" defaultValue={props.data.comment}
+							           onChange={props.onChange2}/>
+							<FormControl>
+								<InputLabel htmlFor="status-select">Статус</InputLabel>
+								<Select
+									defaultValue={props.data.status}
+									id="status-select"
+									label="status"
+									name="status"
+									onChange={props.onChange3}
+								>
+									<MenuItem value="Создана">Создана</MenuItem>
+									<MenuItem value="В процессе">В процессе</MenuItem>
+									<MenuItem value="Завершена">Завершена</MenuItem>
+								</Select>
+							</FormControl>
+						</Stack>
+					</Grid>
+				</DialogContentText>
+			</DialogContent>
+			<DialogActions>
+				<LoadingButton disabled={!props.valid} fullWidth size="large" type="submit" variant="contained">
+					Редактировать
+				</LoadingButton>
+			</DialogActions>
+		</form>
+	</Dialog>;
 }
 
 export function DialogRemove(props) {
